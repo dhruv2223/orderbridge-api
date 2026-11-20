@@ -1,0 +1,20 @@
+services:
+  postgres:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_DB: orderhub
+      POSTGRES_USER: orderhub
+      POSTGRES_PASSWORD: orderhub
+    ports:
+      - "5432:5432"
+
+  # Not started by `mvn spring-boot:run`; run the full stack with `docker compose --profile app up --build`
+  app:
+    profiles: [ app ]
+    build: .
+    depends_on: [ postgres ]
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/orderhub
+      SPRING_DOCKER_COMPOSE_ENABLED: "false"
+    ports:
+      - "8080:8080"
