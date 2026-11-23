@@ -69,7 +69,9 @@ public class OrderService {
 			throw new OrderRejectedException(violations);
 		}
 
-		var saved = this.orders.save(PurchaseOrder.place(request.customerReference(), lines, Instant.now(this.clock).truncatedTo(ChronoUnit.MICROS)));
+		// Postgres stores microseconds; truncate so the response matches what is persisted
+		var now = Instant.now(this.clock).truncatedTo(ChronoUnit.MICROS);
+		var saved = this.orders.save(PurchaseOrder.place(request.customerReference(), lines, now));
 		this.events.publishEvent(new OrderPlaced(saved.id(), saved.customerReference(), saved.total(),
 				lines.stream().map(OrderLine::sku).toList()));
 		return saved;

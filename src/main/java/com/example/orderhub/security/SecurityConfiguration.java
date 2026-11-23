@@ -22,7 +22,7 @@ import org.springframework.security.web.SecurityFilterChain;
  * the catalog and order lifecycle.
  */
 @Configuration(proxyBeanMethods = false)
-class SecurityConfiguration {
+public class SecurityConfiguration {
 
 	static final String ADMIN = "ADMIN";
 
