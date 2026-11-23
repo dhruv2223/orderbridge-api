@@ -2,6 +2,7 @@ package com.example.orderhub.orders;
 
 import java.time.Clock;
 import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -68,7 +69,7 @@ public class OrderService {
 			throw new OrderRejectedException(violations);
 		}
 
-		var saved = this.orders.save(PurchaseOrder.place(request.customerReference(), lines, Instant.now(this.clock)));
+		var saved = this.orders.save(PurchaseOrder.place(request.customerReference(), lines, Instant.now(this.clock).truncatedTo(ChronoUnit.MICROS)));
 		this.events.publishEvent(new OrderPlaced(saved.id(), saved.customerReference(), saved.total(),
 				lines.stream().map(OrderLine::sku).toList()));
 		return saved;

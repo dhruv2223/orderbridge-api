@@ -6,7 +6,7 @@ services:
       POSTGRES_USER: orderhub
       POSTGRES_PASSWORD: orderhub
     ports:
-      - "5432:5432"
+      - "5432" # random host port; Spring Boot discovers it, avoiding clashes with a local Postgres
 
   # Not started by `mvn spring-boot:run`; run the full stack with `docker compose --profile app up --build`
   app:
