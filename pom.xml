@@ -10,10 +10,10 @@
         <relativePath/>
     </parent>
 
-    <groupId>com.example</groupId>
-    <artifactId>order-hub</artifactId>
+    <groupId>io.github.dhruv2223</groupId>
+    <artifactId>orderbridge-api</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>order-hub</name>
+    <name>orderbridge-api</name>
     <description>B2B order management REST API speaking both JSON and XML</description>
 
     <properties>

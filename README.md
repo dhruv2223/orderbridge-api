@@ -1,4 +1,4 @@
-# Order Hub
+# OrderBridge
 
 A B2B order management REST API built with **Spring Boot 4.1** and **Java 25**. Every endpoint speaks
 **both JSON and XML**: partners place orders, suppliers push catalog feeds, and admins manage the
@@ -45,7 +45,7 @@ To run the whole stack in containers instead:
 docker compose --profile app up --build
 ```
 
-Demo users (override with `ORDERHUB_ADMIN_PASSWORD` / `ORDERHUB_PARTNER_PASSWORD`):
+Demo users (override with `ORDERBRIDGE_ADMIN_PASSWORD` / `ORDERBRIDGE_PARTNER_PASSWORD`):
 
 | User | Password | Role |
 |---|---|---|

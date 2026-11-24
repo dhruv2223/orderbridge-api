@@ -6,7 +6,7 @@ COPY mvnw pom.xml ./
 RUN ./mvnw -B -q dependency:go-offline
 COPY src/ src/
 RUN ./mvnw -B -q package -DskipTests \
- && java -Djarmode=tools -jar target/order-hub-*.jar extract --layers --launcher --destination extracted
+ && java -Djarmode=tools -jar target/orderbridge-api-*.jar extract --layers --launcher --destination extracted
 
 # --- runtime stage (layered jar for better image caching) ---
 FROM eclipse-temurin:25-jre

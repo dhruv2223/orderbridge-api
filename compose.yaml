@@ -1,10 +1,12 @@
+name: orderbridge
+
 services:
   postgres:
     image: postgres:17-alpine
     environment:
-      POSTGRES_DB: orderhub
-      POSTGRES_USER: orderhub
-      POSTGRES_PASSWORD: orderhub
+      POSTGRES_DB: orderbridge
+      POSTGRES_USER: orderbridge
+      POSTGRES_PASSWORD: orderbridge
     ports:
       - "5432" # random host port; Spring Boot discovers it, avoiding clashes with a local Postgres
 
@@ -14,7 +16,7 @@ services:
     build: .
     depends_on: [ postgres ]
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/orderhub
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/orderbridge
       SPRING_DOCKER_COMPOSE_ENABLED: "false"
     ports:
       - "8080:8080"
