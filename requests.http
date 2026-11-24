@@ -1,0 +1,88 @@
+### Sample requests — run from IntelliJ's HTTP client or VS Code REST Client.
+@host = http://localhost:8080
+
+### List products (JSON is the default)
+GET {{host}}/api/products?page=0&size=10
+
+### Same list as XML — selected by the Accept header
+GET {{host}}/api/products
+Accept: application/xml
+
+### ...or by query parameter
+GET {{host}}/api/products/KB-100?format=xml
+
+### Price in another currency (calls the external exchange-rate API)
+GET {{host}}/api/products/KB-100/price?currency=USD
+
+### Create a product with an XML body (admin)
+POST {{host}}/api/products
+Authorization: Basic admin admin-secret
+Content-Type: application/xml
+Accept: application/xml
+
+<product>
+  <sku>HS-500</sku>
+  <name>Wireless Headset</name>
+  <category>audio</category>
+  <price>59.00</price>
+  <stock>30</stock>
+</product>
+
+### Validation error -> RFC 9457 problem details listing every invalid field
+POST {{host}}/api/products
+Authorization: Basic admin admin-secret
+Content-Type: application/json
+
+{"sku": "bad sku", "price": -1}
+
+### Bulk import a supplier XML feed (admin)
+POST {{host}}/api/products/import
+Authorization: Basic admin admin-secret
+Content-Type: application/xml
+
+<catalogFeed supplier="ACME" generatedAt="2026-11-25T08:00:00Z">
+  <item sku="KB-100">
+    <name>Mechanical Keyboard</name>
+    <category>peripherals</category>
+    <price>84.90</price>
+    <stock>60</stock>
+  </item>
+  <item sku="CM-900">
+    <name>4K Webcam</name>
+    <category>video</category>
+    <price>119.00</price>
+    <stock>12</stock>
+  </item>
+</catalogFeed>
+
+### Place an order in XML (partner)
+POST {{host}}/api/orders
+Authorization: Basic partner partner-secret
+Content-Type: application/xml
+Accept: application/xml
+
+<order>
+  <customerReference>ACME-42</customerReference>
+  <lines>
+    <line><sku>KB-100</sku><quantity>2</quantity></line>
+    <line><sku>MN-270</sku><quantity>1</quantity></line>
+  </lines>
+</order>
+
+### Place an order in JSON that cannot be fulfilled -> 422 with violations
+POST {{host}}/api/orders
+Authorization: Basic partner partner-secret
+Content-Type: application/json
+
+{"customerReference": "ACME-42", "lines": [{"sku": "MN-270", "quantity": 999}, {"sku": "NOPE", "quantity": 1}]}
+
+### List a customer's orders
+GET {{host}}/api/orders?customerReference=ACME-42
+Authorization: Basic partner partner-secret
+
+### Ship an order (admin only)
+PATCH {{host}}/api/orders/1/status
+Authorization: Basic admin admin-secret
+Content-Type: application/json
+
+{"status": "SHIPPED"}
